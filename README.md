@@ -1,2 +1,2 @@
 # Durk
-Native apps with HTML
+Python desktop apps with html css
