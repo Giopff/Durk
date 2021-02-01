@@ -10,17 +10,15 @@ class Launch():
         except:
             exit("bruh please write html file properly")
         self.root = tk.Tk()
+        try:
+            self.root.title(ParsedFile['html']['head'][0]['title'][0]['_text'])
+        except:
+            self.root.title("Durk App")
         
         
     def Label(self, text):
         self.label=tk.Label(self.root,text=text)
         self.label.pack()
-
-    
-            
-            
-    
-            
 
     def Execute(self):
         self.root.mainloop()
