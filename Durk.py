@@ -1,5 +1,7 @@
 from parser_main import parse
 import tkinter as tk
+from tkinter.ttk import Combobox
+
 ParsedFile=parse('thefile.html')
 methods=['text','button','input']
 root_path=ParsedFile['html']['body']
@@ -28,6 +30,12 @@ class Launch():
         self.Input = tk.Entry(self.root,width=width)
         self.Input.pack()
 
+    def Comboboxx(self,values, current=None):
+        self.Combobox=Combobox(self.root)
+        self.Combobox['values']=values
+        self.Combobox.current(current)
+        self.Combobox.pack()
+
 
     def Execute(self):
         self.root.mainloop()
@@ -45,22 +53,24 @@ def Check(string,Class):
             # print(component)
             for x in component[string]:
                 Class.Label(x['_text'])
-    if string=="button":
+    elif string=="button":
         for component in root_path:
             for x in component[string]:
                 Class.Button(x['_text'])
-    if string=="input":
+    elif string=="input":
         for component in root_path:
             for x in component[string]:
+                if "type" in x: #type checking
+                    if x["type"]=="combobox":
+                        temp_list=[]
+                        for z in x['option']:
+                            print(z)
+                                
+                            temp_list.append(z['value'])
+                        Combobo=Class.Comboboxx(temp_list)
+                        break
                 Class.Input()
-        # Class.Execute()
 if __name__ == '__main__':
     x=Launch()
-    # x.Label(ParsedFile['html']['body'][0]['text'][0]['_text'])
     x.Packer(x)
-
-    # for i in ParsedFile['html']['body']:
-    #     for z in i['text']:
-    #         x.Label(z['_text'])
-    # x.Execute()
 
