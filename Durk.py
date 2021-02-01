@@ -30,6 +30,7 @@ class Launch():
                 for key in tag.keys():
                     if key in methods:
                         Check(key,Class)
+            Class.Execute()
 
 
 def Check(string,Class):
@@ -39,7 +40,7 @@ def Check(string,Class):
             for x in component[string]:
                 
                 Class.Label(x['_text'])
-        Class.Execute()
+        # Class.Execute()
 if __name__ == '__main__':
     x=Launch()
     # x.Label(ParsedFile['html']['body'][0]['text'][0]['_text'])
