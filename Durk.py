@@ -1,4 +1,4 @@
-from Parser import parse
+from parser_main import parse
 import tkinter as tk
 ParsedFile=parse('thefile.html')
 
