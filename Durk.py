@@ -2,13 +2,20 @@ try:
     import tkcalendar as tkc
 except:
     pass
+try:
+    from PIL import ImageTk, Image
+except:
+    pass
+from os import error
 from parser_main import parse
 import tkinter as tk
 import tkinter.ttk as ttk
+from tkinter.filedialog import askopenfile 
+
 
 
 ParsedFile=parse('thefile.html')
-methods=['text','button','input']
+methods=['text','button','input','image','img']
 root_path=ParsedFile['html']['body']
 class Launch():
     def __init__(self):
@@ -63,6 +70,30 @@ class Launch():
             exit("install the 'tkcalendar' library (pip install tkcalendar)")
         self.cal.pack()
 
+    def OpenFile(self):
+        def open_file(): 
+            file = askopenfile(mode ='r', filetypes =[('Python Files', '*.py')]) 
+            if file is not None: 
+                content = file.read()
+  
+        btn = tk.Button(self.root, text ='Open', command = lambda:open_file()) 
+        btn.pack()
+
+    def Image(self,path):
+        try:
+            
+            self.img = ImageTk.PhotoImage(Image.open(path))
+
+        except NameError:
+            exit("install the 'PIL' library (pip install Pillow)")
+        except ModuleNotFoundError:
+            exit("install the 'PIL' library (pip install Pillow)")
+        except:
+            print(error)
+        self.panel = tk.Label(self.root,image=self.img)
+        self.panel.image=self.img
+        self.panel.pack()
+
     def Execute(self):
         self.root.mainloop()
 
@@ -87,6 +118,8 @@ def Check(string,Class):
             for x in component[string]:
                 if "type" in x: #type checking
                     print(x)
+                    # email check if '@' not in email and '.' not in email:
+                    
                     if x["type"]=="combobox":
                         temp_list=[]
                         for z in x['option']:
@@ -112,8 +145,22 @@ def Check(string,Class):
                         except ModuleNotFoundError:
                             exit("install the 'tkcalendar' library (pip install tkcalendar)")
                         continue
+                    if x["type"]=="file":
+                        Class.OpenFile()
+                        continue
                        
                 Class.Input()
+    elif string=="image" or string=="img":
+        for component in root_path:
+            for x in component[string]:
+                try:
+                    print(x['path'])
+                    Class.Image(x["path"])
+                except ModuleNotFoundError:
+                    exit("install the 'PIL' library (pip install Pillow)")
+                
+                continue
+
 if __name__ == '__main__':
     x=Launch()
     x.Packer(x)
