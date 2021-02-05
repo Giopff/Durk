@@ -11,12 +11,15 @@ from parser_main import parse
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.filedialog import askopenfile 
+from parser_main import orderify
+from parser_main import parse_order
 
 
-
+order=lambda name:orderify(parse_order(name),parse(name))
 ParsedFile=parse('thefile.html')
 methods=['text','button','input','image','img']
 root_path=ParsedFile['html']['body']
+root_path_real=order('thefile.html')
 class Launch():
     def __init__(self):
         try:
@@ -98,68 +101,60 @@ class Launch():
         self.root.mainloop()
 
     def Packer(self,Class):
-            for tag in root_path:
+            for tag in root_path_real:
                 for key in tag.keys():
                     if key in methods:
-                        Check(key,Class)
+                        Check(key,Class,tag[key])
             Class.Execute()
 
-def Check(string,Class):
+def Check(string,Class,x):
     if string=="text":
-        for component in root_path:
-            for x in component[string]:
-                Class.Label(x['_text'])
+        Class.Label(x['_text'])
     elif string=="button":
-        for component in root_path:
-            for x in component[string]:
-                Class.Button(x['_text'])
+        Class.Button(x['_text'])
     elif string=="input":
-        for component in root_path:
-            for x in component[string]:
-                if "type" in x: #type checking
-                    print(x)
-                    # email check if '@' not in email and '.' not in email:
-                    
-                    if x["type"]=="combobox":
-                        temp_list=[]
-                        for z in x['option']:
-                                
-                            temp_list.append(z['value'])
-                        Class.Comboboxx(temp_list)
-                        continue
-                    if x["type"]=="checkbox":
+        if "type" in x: #type checking
+            # print(x)
+            # email check if '@' not in email and '.' not in email:
+            
+            if x["type"]=="combobox":
+                temp_list=[]
+                for z in x['option']:
+                        
+                    temp_list.append(z['value'])
+                Class.Comboboxx(temp_list)
+                # continue
+            elif x["type"]=="checkbox":
 
-                        for z in x['option']:
+                for z in x['option']:
 
-                            Class.Checkbox(z['value'])
-                        continue
-                    if x["type"]=="radio":
+                    Class.Checkbox(z['value'])
+                # continue
+            elif x["type"]=="radio":
 
-                        for z in x['option']:
+                for z in x['option']:
 
-                            Class.Radio(z['value'])
-                        continue
-                    if x["type"]=="date":
-                        try:
-                            Class.Date("bruh")
-                        except ModuleNotFoundError:
-                            exit("install the 'tkcalendar' library (pip install tkcalendar)")
-                        continue
-                    if x["type"]=="file":
-                        Class.OpenFile()
-                        continue
-                       
+                    Class.Radio(z['value'])
+                # continue
+            elif x["type"]=="date":
+                try:
+                    Class.Date("bruh")
+                except ModuleNotFoundError:
+                    exit("install the 'tkcalendar' library (pip install tkcalendar)")
+                # continue
+            elif x["type"]=="file":
+                Class.OpenFile()
+                # continue
+                
+            else:
                 Class.Input()
     elif string=="image" or string=="img":
-        for component in root_path:
-            for x in component[string]:
-                try:
-                    print(x['path'])
-                    Class.Image(x["path"])
-                except ModuleNotFoundError:
-                    exit("install the 'PIL' library (pip install Pillow)")
-                
-                continue
+        try:
+            Class.Image(x["path"])
+        except ModuleNotFoundError:
+            exit("install the 'PIL' library (pip install Pillow)")
+        
+        
 
 if __name__ == '__main__':
     x=Launch()
