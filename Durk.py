@@ -44,6 +44,8 @@ class Launch():
     def Input(self,width=10):
         self.Input = tk.Entry(self.root,width=width)
         self.Input.pack()
+        # self.x1 = self.Input.get()
+        # return self.x1
 
     def Comboboxx(self,values, current=None):
         self.Combobox=ttk.Combobox(self.root)
@@ -123,31 +125,36 @@ def Check(string,Class,x):
                         
                     temp_list.append(z['value'])
                 Class.Comboboxx(temp_list)
+                pass
                 # continue
             elif x["type"]=="checkbox":
 
                 for z in x['option']:
 
                     Class.Checkbox(z['value'])
+                pass
                 # continue
             elif x["type"]=="radio":
 
                 for z in x['option']:
 
                     Class.Radio(z['value'])
+                pass
                 # continue
             elif x["type"]=="date":
                 try:
                     Class.Date("bruh")
                 except ModuleNotFoundError:
                     exit("install the 'tkcalendar' library (pip install tkcalendar)")
+                pass
                 # continue
             elif x["type"]=="file":
                 Class.OpenFile()
-                # continue
-                
-            else:
-                Class.Input()
+                pass
+                # continue 
+                 
+            
+        Class.Input()
     elif string=="image" or string=="img":
         try:
             Class.Image(x["path"])
