@@ -7,33 +7,23 @@ try:
 except:
     pass
 from os import error
-# from parser_main import parse
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.filedialog import askopenfile 
-# from parser_main import orderify
-# from parser_main import parse_order
 import xml.etree.ElementTree as ET
 
 xmlTree = ET.parse('thefile.html')
 ROOT=xmlTree.getroot()
 
-
-# order=lambda name:orderify(parse_order(name),parse(name))
-# ParsedFile=parse('thefile.html')
 methods=['text','button','input','image','img']
-# root_path=ParsedFile['html']['body']
-# root_path_real=order('thefile.html')
 class Launch():
     def __init__(self):
         try:
-            # ParsedFile['html']['body']
             ROOT.findall("./body")
         except:
             exit("bruh please write html file properly")
         self.root = tk.Tk()
         try:
-            # self.root.title(ParsedFile['html']['head'][0]['title'][0]['_text'])
             for item in ROOT.findall("./head/*"):
                 check_head(self.root,item)
         except:
@@ -51,8 +41,6 @@ class Launch():
     def Input(self,width=10):
         self.Input = tk.Entry(self.root,width=width)
         self.Input.pack()
-        # self.x1 = self.Input.get()
-        # return self.x1
 
     def Comboboxx(self,values, current=None):
         self.Combobox=ttk.Combobox(self.root)
@@ -71,10 +59,6 @@ class Launch():
         RB.pack()
 
     def Date(self,text="Pick date"):
-        # self.top = tk.Toplevel(self.root)
-
-        # ttk.Label(self.
-        # top, text=text).pack() if you want some popup than this is a good option. i am gonna implement this feature soon
         try:
             self.cal = tkc.DateEntry() #top, width=12, background='darkblue', foreground='white', borderwidth=2 RANDOM PARAMEteRS LOL
         except NameError:
@@ -111,10 +95,6 @@ class Launch():
         self.root.mainloop()
 
     def Packer(self,Class):
-            # for tag in root_path_real:
-            #     for key in tag.keys():
-            #         if key in methods:
-            #             Check(key,Class,tag[key])
             for item in ROOT.findall("./body/*"):
                 Check(item.tag,Class,item.text,item.attrib,item)
             Class.Execute()
@@ -126,7 +106,6 @@ def Check(string,Class,text,attribs,Root):
         Class.Button(text)
     elif string=="input":
         if "type" in attribs: #type checking
-            # print(x)
             # email check if '@' not in email and '.' not in email:
             
             if attribs["type"]=="combobox":
@@ -136,32 +115,32 @@ def Check(string,Class,text,attribs,Root):
                     temp_list.append(z.attrib['value'])
                 Class.Comboboxx(temp_list)
                 pass
-                # continue
+
             elif attribs["type"]=="checkbox":
 
                 for z in Root.findall("./*"):
 
                     Class.Checkbox(z.attrib['value'])
                 pass
-                # continue
+
             elif attribs["type"]=="radio":
 
                 for z in Root.findall("./*"):
 
                     Class.Radio(z.attrib['value'])
                 pass
-                # continue
+
             elif attribs["type"]=="date":
                 try:
                     Class.Date("bruh")
                 except ModuleNotFoundError:
                     exit("install the 'tkcalendar' library (pip install tkcalendar)")
                 pass
-                # continue
+
             elif attribs["type"]=="file":
                 Class.OpenFile()
                 pass
-                # continue 
+ 
                  
         else:
             Class.Input()
