@@ -11,18 +11,28 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.filedialog import askopenfile 
 import xml.etree.ElementTree as ET
-
+CONTEXT={}
 xmlTree = ET.parse('thefile.html')
 ROOT=xmlTree.getroot()
 
-methods=['text','button','input','image','img']
+
 class Launch():
+    
     def __init__(self):
+        # self.methods=['text','button','input','image','img']
         try:
             ROOT.findall("./body")
         except:
             exit("bruh please write html file properly")
         self.root = tk.Tk()
+        self.elemList = []
+
+        for elem in xmlTree.iter():
+            self.elemList.append(elem.attrib)
+        self.IDLIST={}
+        # for elem in self.elemList:
+        #     if "id" in elem.keys():
+        #         self.IDLIST[elem["id"]]=None
         try:
             for item in ROOT.findall("./head/*"):
                 check_head(self.root,item)
@@ -34,12 +44,20 @@ class Launch():
         self.label=tk.Label(self.root,text=text)
         self.label.pack()
 
-    def Button(self,text):
-        self.button=tk.Button(self.root,text=text)
+    def Button(self,text,Root,Class,Context=CONTEXT):
+        print(Context)
+        self.function=lambda:Context[Root.attrib['onclick']](self.root,Class.getElementByID("shes"))
+        self.button=tk.Button(self.root,text=text,command=self.function)
+
         self.button.pack()
 
-    def Input(self,width=10):
+    def Input(self,Root,width=20):
         self.Input = tk.Entry(self.root,width=width)
+        # try:
+        print("LOOOL")
+        self.IDLIST[Root.attrib["id"]]=self.Input
+        # except:
+            # pass
         self.Input.pack()
 
     def Comboboxx(self,values, current=None):
@@ -94,6 +112,10 @@ class Launch():
     def Execute(self):
         self.root.mainloop()
 
+    def getElementByID(self,name):
+        # print(self.IDLIST)
+        return self.IDLIST[name]
+
     def Packer(self,Class):
             for item in ROOT.findall("./body/*"):
                 Check(item.tag,Class,item.text,item.attrib,item)
@@ -103,7 +125,7 @@ def Check(string,Class,text,attribs,Root):
     if string=="text":
         Class.Label(text)
     elif string=="button":
-        Class.Button(text)
+        Class.Button(text,Root,Class)
     elif string=="input":
         if "type" in attribs: #type checking
             # email check if '@' not in email and '.' not in email:
@@ -143,7 +165,7 @@ def Check(string,Class,text,attribs,Root):
  
                  
         else:
-            Class.Input()
+            Class.Input(Root)
     elif string=="image" or string=="img":
         try:
             Class.Image(attribs["path"])
@@ -156,6 +178,17 @@ def check_head(root,tag):
 
 
 if __name__ == '__main__':
+   
     x=Launch()
+    def gamotana(root=None,entry=None):
+        # try:
+        input = entry.get()
+        label1 = tk.Label(root, text=input)
+        label1.pack()
+        # except:
+            # pass
+    CONTEXT["gamotana"]=gamotana
+    
     x.Packer(x)
+    
 
