@@ -45,20 +45,18 @@ class Launch():
         self.label.pack()
 
     def Button(self,text,Root,Class,Context=CONTEXT):
-        print(Context)
-        self.function=lambda:Context[Root.attrib['onclick']](self.root,Class.getElementByID("shes"))
+        self.function=lambda:Context[Root.attrib['onclick']][0](self.root,Class.getElementByID(Context[Root.attrib['onclick']][1]))
         self.button=tk.Button(self.root,text=text,command=self.function)
 
         self.button.pack()
 
     def Input(self,Root,width=20):
-        self.Input = tk.Entry(self.root,width=width)
-        # try:
-        print("LOOOL")
-        self.IDLIST[Root.attrib["id"]]=self.Input
-        # except:
-            # pass
-        self.Input.pack()
+        self.input = tk.Entry(self.root,width=width)
+        try:
+            self.IDLIST[Root.attrib["id"]]=self.input
+        except:
+            pass
+        self.input.pack()
 
     def Comboboxx(self,values, current=None):
         self.Combobox=ttk.Combobox(self.root)
@@ -113,7 +111,6 @@ class Launch():
         self.root.mainloop()
 
     def getElementByID(self,name):
-        # print(self.IDLIST)
         return self.IDLIST[name]
 
     def Packer(self,Class):
@@ -187,7 +184,15 @@ if __name__ == '__main__':
         label1.pack()
         # except:
             # pass
-    CONTEXT["gamotana"]=gamotana
+    CONTEXT["gamotana"]=[gamotana,"shes"]
+    def gamotanaa(root=None,entry=None):
+        # try:
+        input = entry.get()
+        label1 = tk.Label(root, text=input)
+        label1.pack()
+        # except:
+            # pass
+    CONTEXT["gamotanaa"]=[gamotanaa,"she"]
     
     x.Packer(x)
     
