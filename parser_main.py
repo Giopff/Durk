@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 from copy import copy
-
+import tinycss2
+import re
 
 
 def dictify(r,root=True):
@@ -86,6 +87,24 @@ def func(index,List,item):
     if List[number]==item:
       times+=1
   return times
+
+
+
+
+def cssParse(name):
+    with open(name) as idk:
+        rules = tinycss2.parse_stylesheet(idk.read(),skip_whitespace=True)
+    dicti={}
+    for rule in rules:
+        x=rule.serialize()
+        z=x.find("{")
+        parsed=re.sub("\n","",x)[z+1:-1].split(";")[:-1]
+        dicti[x.split(" ")[0]]=None
+        idkman={}
+        for i in parsed:
+            idkman[i.strip().split(":")[0].strip()]=i.strip().split(":")[1].strip()
+        dicti[x.split(" ")[0]]=idkman
+    return dicti
 if __name__=="__main__":
     
     # print(parse('thefile.html'))

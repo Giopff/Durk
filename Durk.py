@@ -11,9 +11,11 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.filedialog import askopenfile 
 import xml.etree.ElementTree as ET
+from parser_main import cssParse
 CONTEXT={}
 xmlTree = ET.parse('thefile.html')
 ROOT=xmlTree.getroot()
+cssDict=cssParse("test/gio.css")
 
 
 class Launch():
@@ -40,8 +42,8 @@ class Launch():
             self.root.title("Durk App")
         
         
-    def Label(self, text):
-        self.label=tk.Label(self.root,text=text)
+    def Label(self, text,width=None):
+        self.label=tk.Label(self.root,text=text,width=width)
         self.label.pack()
 
     def Button(self,text,Root,Class,Context=CONTEXT):
@@ -115,12 +117,16 @@ class Launch():
 
     def Packer(self,Class):
             for item in ROOT.findall("./body/*"):
-                Check(item.tag,Class,item.text,item.attrib,item)
+                try:
+                    self.dict=cssDict["."+item.attrib["id"]]
+                except:
+                    pass
+                Check(item.tag,Class,item.text,item.attrib,item,self.dict)
             Class.Execute()
 
-def Check(string,Class,text,attribs,Root):
+def Check(string,Class,text,attribs,Root,styles):
     if string=="text":
-        Class.Label(text)
+        Class.Label(text,int(styles["width"]))
     elif string=="button":
         Class.Button(text,Root,Class)
     elif string=="input":
