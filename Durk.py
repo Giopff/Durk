@@ -109,6 +109,10 @@ class Launch():
         self.panel.image=self.img
         self.panel.pack()
 
+    def frame(self,width=100,height=100):
+        self.contframe = tk.Frame(self.main,width=width,height=height)
+        self.contframe.pack()
+
     def Execute(self):
         self.root.mainloop()
 
@@ -125,6 +129,8 @@ class Launch():
             Class.Execute()
 
 def Check(string,Class,text,attribs,Root,styles):
+    # if string=="container":
+    #     Class.frame
     if string=="text":
         Class.Label(text,int(styles["width"]))
     elif string=="button":
