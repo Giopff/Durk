@@ -78,7 +78,7 @@ class Launch():
 
     def Date(self,text="Pick date"):
         try:
-            self.cal = tkc.DateEntry() #top, width=12, background='darkblue', foreground='white', borderwidth=2 RANDOM PARAMEteRS LOL
+            self.cal = tkc.DateEntry()
         except NameError:
             exit("install the 'tkcalendar' library (pip install tkcalendar)")
         except ModuleNotFoundError:
