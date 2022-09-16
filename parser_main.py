@@ -9,8 +9,6 @@ def dictify(r,root=True):
     if root:
         return {r.tag : dictify(r, False)}
     d=copy(r.attrib)
-    # print(d)
-    # d['times']=times
     if r.text and r.text[0:3]!='\n  ':
         d["_text"]=r.text
         
